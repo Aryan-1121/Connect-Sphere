@@ -8,3 +8,15 @@
 
  APPWRITE 
    npm install appwrite
+
+
+ SHADCN 
+   toast-
+      npx shadcn-ui@latest add toast
+
+ react-query => now known as tanquery , it allows so many features (https://tanstack.com/query/v3/)
+  npm install @tanstack/react-query
+
+
+
+
