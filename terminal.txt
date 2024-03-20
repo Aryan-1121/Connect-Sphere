@@ -4,3 +4,7 @@
     npm  i -D @types/node 
 
     npx shadcn-ui@latest init
+
+
+ APPWRITE 
+   npm install appwrite
