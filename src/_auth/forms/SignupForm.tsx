@@ -10,17 +10,19 @@ import { Input } from "@/components/ui/input"
 
 import { SignupValidation } from "@/lib/validation"
 import Loader from "@/components/shared/Loader"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { createUserAccount } from "@/lib/appwrite/api"
 
 import { useToast } from "@/components/ui/use-toast"
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/quriesAndMutation"
+import { useUserContext } from "@/context/AuthContext"
 
 
 const SignupForm = () => {
 
   const { toast } = useToast();
-
+  const {checkAuthUser, isLoading: isUserLoading } = useUserContext()
+  const navigate = useNavigate();
 
   const {mutateAsync: createUserAccount, isLoading: isCreatingUser} = useCreateUserAccount();
 
@@ -65,7 +67,17 @@ const SignupForm = () => {
     
     // now we have our session we need to store it in react context
 
-    
+    const isLoggedIn = await checkAuthUser();
+
+    if(isLoggedIn){
+      form.reset()
+
+      navigate('/');
+    }else{
+      return toast({
+        title:'Sign-up failed, Please try again.'
+      })
+    }
 
     console.log(newUser)
   }

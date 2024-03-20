@@ -81,7 +81,7 @@ export async function signInAccount(user:{
 }
 
 
-export async function getCurrentAccount() {
+export async function getCurrentUser() {
 
     try {
         const currentAccount  = await account.get()         // this will get the currently logged in user
