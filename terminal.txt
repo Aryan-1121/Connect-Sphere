@@ -1,0 +1,6 @@
+20/3/24
+
+ SHADCN UI LIBRARY (https://ui.shadcn.com/docs/installation/vite)
+    npm  i -D @types/node 
+
+    npx shadcn-ui@latest init
