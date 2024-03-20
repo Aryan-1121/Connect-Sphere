@@ -59,10 +59,14 @@ const SignupForm = () => {
 
     if(!session){
       return toast({
-        title: 'Sign in failed, try again'
+        title: 'Sign-in failed, try again'
       })
     }
-  
+    
+    // now we have our session we need to store it in react context
+
+    
+
     console.log(newUser)
   }
 
