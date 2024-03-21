@@ -12,9 +12,7 @@ export async function createUserAccount(user: INewUser){
             user.name
         );
 
-        if(!newAccount){
-            throw Error;
-        }
+        if(!newAccount) throw Error;
 
         const avatarUrl = avatars.getInitials(user.name);
 
@@ -24,8 +22,8 @@ export async function createUserAccount(user: INewUser){
             accountId: newAccount.$id,
             name: newAccount.name,
             email: newAccount.email,
-            username: user.username,
-            imageUrl: avatarUrl
+            imageUrl: avatarUrl,
+            username: user.username
         });
 
         return newUser;
@@ -41,8 +39,8 @@ export async function createUserAccount(user: INewUser){
 
 export async function saveUserToDB(user:{
     accountId: string;
-    email: string;
     name: string;
+    email: string;
     imageUrl: URL;
     username?:string;           // optional
 }){
@@ -70,9 +68,13 @@ export async function signInAccount(user:{
     password:string;
 }){
     try {
-        
-        const session = await account.createEmailPasswordSession(user.email, user.password);
+        console.log('signing inn ');
+        const session = await account.createEmailSession(user.email, user.password);
+        console.log('session :' + session);
 
+        // trying to store session in local storage since appwrite is giving 401 unauthorized from localhost (might delete later when hosted )
+        // userId stored as a sessionId -> purpose of storing is after some time of user log in, when try to fetch useId on reload the appWrite is unable to fetch resulting 401 so we will provide it via localstorage
+        // localStorage.setItem('sessionId', session.userId);
         return session;
 
     } catch (error) {
@@ -82,43 +84,37 @@ export async function signInAccount(user:{
 }
 
 
-export async function getAccount(){
-    try{
-
-        const currentAccount = await account.get();
-        return currentAccount;
-    }catch(error){
-        console.log('$$$$$$$$$$$' +error);
-        
-    }
-}
 
 
 export async function getCurrentUser() {
 
     try {
-        const currentAccount  = await getAccount();         // this will get the currently logged in user
-        
-        // if currentAccount doesnt exist -> throw error else try to retrieve it 
-        if(!currentAccount) throw Error;
+            console.log("userId: ", localStorage.getItem("sessionId"));
+            const currentAccount  = await account.get();         // this will get the currently logged in user
 
-        const currentUser = await databases.listDocuments(
-            appwriteConfig.databaseId,
-            appwriteConfig.userCollectionId,
-            [Query.equal("accountId", currentAccount.$id)]
-          );
+            // const currentAccountId = localStorage.getItem('sessionId');
+        
+            // if currentAccount doesnt exist -> throw error else try to retrieve it 
+            if(!currentAccount) throw Error;
+            // if(currentAccountId !== null){
 
-        if(!currentUser)
-            throw Error; 
-        
-        return currentUser.documents[0];
+                const currentUser = await databases.listDocuments(
+                    appwriteConfig.databaseId,
+                    appwriteConfig.userCollectionId,
+                    [Query.equal("accountId", currentAccount.$id)]
+                    // [Query.equal('accountId', currentAccountId)]
+                );
 
+                if(!currentUser)
+                    throw Error; 
+            
+                return currentUser.documents[0];
+            // }
         
-    } catch (error) {
-        console.log(error);
-        return null;
-        
-    }
+        } catch (error) {
+            console.log('---- '+error);
+            return null;
+        }
     
 }
 

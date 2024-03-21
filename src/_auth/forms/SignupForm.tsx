@@ -40,6 +40,8 @@ const SignupForm = () => {
   })
 
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
+    // getting values from signup form after zod validation 
+
     // create user 
     const newUser = await createUserAccount(values); 
 
