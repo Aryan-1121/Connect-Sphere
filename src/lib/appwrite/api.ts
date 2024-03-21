@@ -2,6 +2,7 @@ import { ID, Query } from "appwrite";
 import { INewUser } from "../types";
 import { account, appwriteConfig, avatars, databases } from "./config";
 
+
 export async function createUserAccount(user: INewUser){
     try{
         const newAccount = await account.create(
@@ -43,7 +44,7 @@ export async function saveUserToDB(user:{
     email: string;
     name: string;
     imageUrl: URL;
-    username?:string;
+    username?:string;           // optional
 }){
     try {
         const newUser = await databases.createDocument(
@@ -63,7 +64,7 @@ export async function saveUserToDB(user:{
 }
 
 
-
+// to create session using email and password
 export async function signInAccount(user:{
     email: string;
     password:string;
@@ -75,7 +76,19 @@ export async function signInAccount(user:{
         return session;
 
     } catch (error) {
-        console.log(error);
+        console.log('during session creation '+error);
+        
+    }
+}
+
+
+export async function getAccount(){
+    try{
+
+        const currentAccount = await account.get();
+        return currentAccount;
+    }catch(error){
+        console.log('$$$$$$$$$$$' +error);
         
     }
 }
@@ -84,7 +97,7 @@ export async function signInAccount(user:{
 export async function getCurrentUser() {
 
     try {
-        const currentAccount  = await account.get()         // this will get the currently logged in user
+        const currentAccount  = await getAccount();         // this will get the currently logged in user
         
         // if currentAccount doesnt exist -> throw error else try to retrieve it 
         if(!currentAccount) throw Error;
@@ -92,16 +105,18 @@ export async function getCurrentUser() {
         const currentUser = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
-            [Query.equal('accountId', currentAccount.$id)]
-        )
+            [Query.equal("accountId", currentAccount.$id)]
+          );
 
-        if(!currentUser) throw Error; 
+        if(!currentUser)
+            throw Error; 
         
         return currentUser.documents[0];
 
         
     } catch (error) {
         console.log(error);
+        return null;
         
     }
     
