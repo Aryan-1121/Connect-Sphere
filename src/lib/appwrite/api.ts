@@ -118,3 +118,16 @@ export async function getCurrentUser() {
     
 }
 
+
+
+//  appwrite also provide feature to delete the session 
+
+export async function signOutAccount() {
+    try{
+        const session = await account.deleteSession('current');
+        return session;
+    }catch(error){
+        console.log(error);
+        
+    }
+}
