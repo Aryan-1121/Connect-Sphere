@@ -90,7 +90,6 @@ export async function signInAccount(user: {
 export async function getCurrentUser() {
 
     try {
-        console.log("userId: ", localStorage.getItem("sessionId"));
         const currentAccount = await account.get();         // this will get the currently logged in user
 
         // const currentAccountId = localStorage.getItem('sessionId');
@@ -285,7 +284,7 @@ export async function likePost(postId: string, likesArray: string[]) {
 
 //   createing new record in saves  db (saving postId in saves database) 
 
-  export async function savePost(postId: string, userId: string) {
+  export async function savePost(userId: string, postId: string) {
     try {
       const updatedPost = await databases.createDocument(
         appwriteConfig.databaseId,
@@ -303,6 +302,10 @@ export async function likePost(postId: string, likesArray: string[]) {
         })
         throw Error;
       } 
+    //   console.log(`userid= ${userId}, postId=${postId}`);
+      
+    //   console.log('save post / updatedpost / uniqueId of saves '+updatedPost.$id);
+    //   console.log(updatedPost.$);
   
       return updatedPost;
     } catch (error) {
