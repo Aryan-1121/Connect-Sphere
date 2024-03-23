@@ -452,3 +452,67 @@ export async function getPostById(postId?: string) {
       console.log(error);
     }
   }
+
+
+
+
+
+  export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
+    // load top 10  posts in descending order of post time 
+    const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(10)];
+
+
+  
+    if (pageParam) {
+        // if we are at page 2 then skip the first 10 already and give me the second 10
+      queries.push(Query.cursorAfter(pageParam.toString()));
+    }
+  
+    try {
+      const posts = await databases.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        queries
+      );
+  
+      if (!posts) throw Error;
+  
+      return posts;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
