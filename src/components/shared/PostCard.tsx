@@ -1,4 +1,5 @@
 import { useUserContext } from "@/context/AuthContext";
+import { formatDateString, multiFormatDateString } from "@/lib/utils";
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 
@@ -18,7 +19,7 @@ const PostCard = ({ post }: PostCardProps) => {
     <div className="post-card">
       <div className="flex-between">
         <div className="flex items-center gap-3">
-          {/* <Link to={`/profile/${post.creator.$id}`}>
+          <Link to={`/profile/${post.creator.$id}`}>
             <img
               src={
                 post.creator?.imageUrl ||
@@ -27,9 +28,9 @@ const PostCard = ({ post }: PostCardProps) => {
               alt="creator"
               className="w-12 lg:h-12 rounded-full"
             />
-          </Link> */}
+          </Link>
 
-          {/* <div className="flex flex-col">
+          <div className="flex flex-col">
             <p className="base-medium lg:body-bold text-light-1">
               {post.creator.name}
             </p>
@@ -42,10 +43,11 @@ const PostCard = ({ post }: PostCardProps) => {
                 {post.location}
               </p>
             </div>
-          </div> */}
+          </div>
         </div>
 
-        {/* <Link
+{/* this link will only show if I created the post  */}
+        <Link
           to={`/update-post/${post.$id}`}
           className={`${user.id !== post.creator.$id && "hidden"}`}>
           <img
@@ -54,10 +56,12 @@ const PostCard = ({ post }: PostCardProps) => {
             width={20}
             height={20}
           />
-        </Link> */}
+        </Link>
       </div>
 
-      {/* <Link to={`/posts/${post.$id}`}>
+      {/* redirect to post !! */}
+
+      <Link to={`/posts/${post.$id}`}>
         <div className="small-medium lg:base-medium py-5">
           <p>{post.caption}</p>
           <ul className="flex gap-1 mt-2">
@@ -74,7 +78,7 @@ const PostCard = ({ post }: PostCardProps) => {
           alt="post image"
           className="post-card_img"
         />
-      </Link> */}
+      </Link>
 
       {/* <PostStats post={post} userId={user.id} /> */}
     </div>

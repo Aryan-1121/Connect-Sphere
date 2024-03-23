@@ -199,7 +199,7 @@ export async function uploadFile(file: File) {
 
 
 
-// ============================== GET FILE URL
+// GETTING FILE URL
 export function getFilePreview(fileId: string) {
     try {
         const fileUrl = storage.getFilePreview(
