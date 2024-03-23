@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createPost, createUserAccount, deleteSavedPost, getCurrentUser, getRecentPosts, likePost, savePost, signInAccount, signOutAccount } from '../appwrite/api'
+import { createPost, createUserAccount, deleteSavedPost, getCurrentUser, getPostById, getRecentPosts, likePost, savePost, signInAccount, signOutAccount } from '../appwrite/api'
 import { INewPost, INewUser } from '../types'
 import { CreatePost } from '@/_root/pages'
 
@@ -149,8 +149,16 @@ export const useSavePost = () => {
 
 
 
+// postid is getting as a param
+  export const useGetPostById = (postId?: string) => {
+    return useQuery({
+      queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
+      queryFn: () => getPostById(postId),
+      // we want to enable the fetching only if we are fetching the data of another id 
+      enabled: !!postId
+    });
 
-
+  };
 
 
 

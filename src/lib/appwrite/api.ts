@@ -341,3 +341,31 @@ export async function likePost(postId: string, likesArray: string[]) {
 
 
 
+//  GET POST BY ID
+export async function getPostById(postId?: string) {
+    if (!postId) throw Error;
+  
+    try {
+      const post = await databases.getDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        postId
+      );
+  
+      if (!post) throw Error;
+  
+      return post;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
