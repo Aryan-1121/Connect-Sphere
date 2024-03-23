@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
-import {Form,FormControl,FormField,FormItem,FormLabel,FormMessage,} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from '../ui/textarea'
 import FileUploader from '../shared/FileUploader'
@@ -13,13 +13,13 @@ import { Models } from 'appwrite'
 import { useUserContext } from "@/context/AuthContext"
 import { toast } from "../ui/use-toast"
 import { useNavigate } from "react-router-dom"
-import { useCreatePost } from "@/lib/react-query/quriesAndMutation"
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/quriesAndMutation"
 
 
 
 type PostFormProps = {
-  post? : Models.Document;
-  action : 'Create' | 'Update'
+  post?: Models.Document;
+  action: 'Create' | 'Update'
 }
 
 
@@ -29,7 +29,12 @@ const PostForm = ({ post, action }: PostFormProps) => {
 
   const { mutateAsync: CreatePost, isPending: isLoadingCreate } = useCreatePost();
 
-  const { user } =useUserContext();
+  const { user } = useUserContext();
+
+  const { mutateAsync: updatePost, isPending: isLoadingUpdate } = useUpdatePost();
+
+
+
 
   const navigate = useNavigate();
 
@@ -47,19 +52,40 @@ const PostForm = ({ post, action }: PostFormProps) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof PostValidation>) {
 
+    if (post && action === 'Update') {
+      const updatedPost = await updatePost({
+        ...values,
+        postId: post.$id,
+        imageId: post?.imageId,
+        imageUrl: post?.imageUrl
+      })
+
+      if (!updatedPost) {
+        toast({
+          title: 'Please try again !!'
+        })
+      }
+
+      // if post sucessfully updated then navigate to that particular post details rather than hame page 
+      return navigate(`/posts/${post.$id}`)
+    }
+
+
+    // if its not update then -> 
+
     const newPost = await CreatePost({
-      ...values, 
+      ...values,
       userId: user.id
-    }) 
-    if(!newPost){
+    })
+    if (!newPost) {
       toast({
         title: 'Please try again !'
-      }) 
+      })
     }
     navigate('/');
 
 
-  } 
+  }
 
   return (
     <Form {...form}>
@@ -102,7 +128,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel className='shad-form_label'>Add Location</FormLabel>
               <FormControl>
-                <Input type='text' className='shad-input' {...field}/>
+                <Input type='text' className='shad-input' {...field} />
               </FormControl>
 
               <FormMessage className='shad-form_message' />
@@ -120,9 +146,9 @@ const PostForm = ({ post, action }: PostFormProps) => {
                 <Input
                   type='text'
                   className='shad-input'
-                  placeholder='Art, Sports, Places' 
+                  placeholder='Art, Sports, Places'
                   {...field}
-                  />
+                />
               </FormControl>
 
               <FormMessage className='shad-form_message' />
@@ -134,7 +160,14 @@ const PostForm = ({ post, action }: PostFormProps) => {
           <Button
             type="button"
             className='shad-button_dark_4'>Cancel</Button>
-          <Button type="submit" className='shad-button_primary whitespace-nowrap'>Submit</Button>
+          <Button
+            type="submit"
+            className='shad-button_primary whitespace-nowrap'
+            disabled={isLoadingCreate || isLoadingUpdate}>
+              {isLoadingCreate || isLoadingUpdate && 'Loading...'}
+              {action}       
+              {/* action contains either 'create' or 'Update' */}
+          </Button>
         </div>
       </form>
     </Form>
