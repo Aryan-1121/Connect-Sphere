@@ -24,7 +24,15 @@ const App = () => {
         <Route element= {<RootLayout />}>
 
             <Route index element={<Home />} /> 
-        
+            <Route path='/explore' element={<Element />} />
+            <Route path='/profile/:id/*' element={<Profile />} />
+            <Route path='/create-post' element={<CreatePost />} />
+            <Route path='/saved' element={<Saved />} />
+            <Route path='/posts/:id' element={<PostDetails />} />
+            <Route path='/all-users' element={<AllUsers />} />
+            <Route path='/update-post/:id' element={<EditPost />} />
+            <Route path='/update-profile/:id' element={<UpdateProfile />} />
+
         </Route>
 
 
