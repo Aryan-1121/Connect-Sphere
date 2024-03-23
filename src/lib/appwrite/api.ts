@@ -1,6 +1,7 @@
 import { ID, Query } from "appwrite";
 import { INewPost, INewUser } from "../types";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
+import { toast } from "@/components/ui/use-toast";
 
 
 export async function createUserAccount(user: INewUser) {
@@ -253,15 +254,86 @@ export async function getRecentPosts() {
 
 
 
+// update like in db
+
+export async function likePost(postId: string, likesArray: string[]) {
+    try {
+      const updatedPost = await databases.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        postId,
+        {
+          likes: likesArray,
+        }
+      );
+  
+      if (!updatedPost){
+        toast({
+            title:'Something went wrong couldnt like now :('
+        })
+        throw Error;
+      } 
+  
+      return updatedPost;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+
+//   createing new record in saves  db (saving postId in saves database) 
+
+  export async function savePost(postId: string, userId: string) {
+    try {
+      const updatedPost = await databases.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.savesCollectionId,
+        ID.unique(),
+        {
+          user: userId,
+          post: postId
+        }
+      );
+  
+      if (!updatedPost){
+        toast({
+            title:'Something went wrong couldnt save this post :('
+        })
+        throw Error;
+      } 
+  
+      return updatedPost;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
 
 
 
-
-
-
-
+  export async function deleteSavedPost(savedRecordId: string) {
+    try {
+      const statusCode = await databases.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.savesCollectionId,
+        savedRecordId
+      );
+  
+      if (!statusCode){
+        toast({
+            title:'Something went wrong couldnt delete this post :('
+        })
+        throw Error;
+      } 
+  
+      return { status: 'ok'};
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
 
