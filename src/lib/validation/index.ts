@@ -19,3 +19,13 @@ export const SignupValidation = z.object({
 
 
 
+  export const PostValidation = z.object({
+    caption: z.string().max(500),
+    file: z.custom<File[]>(),
+    location: z.string().max(60),
+    tags: z.string()
+  })
+
+
+
+
