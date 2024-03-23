@@ -1,3 +1,5 @@
+// label will work as key while using this as a list 
+
 export const sidebarLinks = [
     {
       imgURL: "/assets/icons/home.svg",
@@ -38,13 +40,13 @@ export const sidebarLinks = [
       label: "Explore",
     },
     {
+        imgURL: "/assets/icons/gallery-add.svg",
+        route: "/create-post",
+        label: "Create",
+    },
+    {
       imgURL: "/assets/icons/bookmark.svg",
       route: "/saved",
       label: "Saved",
-    },
-    {
-      imgURL: "/assets/icons/gallery-add.svg",
-      route: "/create-post",
-      label: "Create",
     },
   ];
