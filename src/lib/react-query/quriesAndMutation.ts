@@ -199,8 +199,8 @@ export const useSavePost = () => {
     return useInfiniteQuery({
       queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
       queryFn: getInfinitePosts,
+      // @ts-ignore
       getNextPageParam: (lastPage) => {
-        console.log(lastPage);
         // console.log('-------'+ lastPage?.documents);        
         
         // If there's no data, there are no more pages.

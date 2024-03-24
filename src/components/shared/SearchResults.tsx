@@ -1,6 +1,5 @@
 import { Models } from "appwrite";
 import Loader from "./Loader";
-import { searchPosts } from "@/lib/appwrite/api";
 import GridPostList from "./GridPostList";
 
 
@@ -18,12 +17,14 @@ const SearchResults = ({isSearchFetching, searchedPosts}: SearchResultsProps) =>
     if(isSearchFetching)
         return <Loader />
 
-    console.log("seachded post = "+ searchPosts);
+    // console.log("searched post = "+ searchedPosts.documents.);
     
+    // @ts-ignore
     if(searchedPosts && searchedPosts.documents.length > 0){
 
         return(
-            <GridPostList posts={searchPosts.documents} />
+            // @ts-ignore
+            <GridPostList posts={searchedPosts.documents} />
         ) 
         
     }

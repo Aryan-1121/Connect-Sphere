@@ -495,8 +495,11 @@ export async function getPostById(postId?: string) {
       );
 
       if (!posts) throw Error;
+        
+      // console.log('posts s- ' +posts.documents.map(e => console.log('$$$$$$$$ ' +e.$id)));         //this is giving post id of search result
 
-  
+
+        
       return posts;
     } catch (error) {
       console.log('search post error - '+error);
