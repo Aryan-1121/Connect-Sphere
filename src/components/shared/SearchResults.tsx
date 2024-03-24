@@ -18,7 +18,7 @@ const SearchResults = ({isSearchFetching, searchedPosts}: SearchResultsProps) =>
     if(isSearchFetching)
         return <Loader />
 
-    console.log( searchPosts.documents);
+    console.log("seachded post = "+ searchPosts);
     
     if(searchedPosts && searchedPosts.documents.length > 0){
 

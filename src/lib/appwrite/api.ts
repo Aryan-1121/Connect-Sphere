@@ -499,7 +499,7 @@ export async function getPostById(postId?: string) {
   
       return posts;
     } catch (error) {
-      console.log(error);
+      console.log('search post error - '+error);
     }
   }
 

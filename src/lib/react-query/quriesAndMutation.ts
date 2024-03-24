@@ -1,7 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost } from '../appwrite/api'
 import { INewPost, INewUser, IUpdatePost } from '../types'
-import { CreatePost } from '@/_root/pages'
 
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys";
 
@@ -201,11 +200,18 @@ export const useSavePost = () => {
       queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
       queryFn: getInfinitePosts,
       getNextPageParam: (lastPage) => {
+        console.log(lastPage);
+        // console.log('-------'+ lastPage?.documents);        
+        
         // If there's no data, there are no more pages.
         if (lastPage && lastPage.documents.length === 0) return null;
   
         // Use the $id of the last document as the cursor.
-        const lastId = lastPage.documents[lastPage?.documents.length - 1].$id;
+
+
+        const lastId = lastPage?.documents[lastPage.documents.length - 1].$id;
+        // console.log('last id = '+lastId);
+        // code reaching here  so must be fine 
         return lastId;
       }
     });

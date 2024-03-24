@@ -5,13 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from '@/components/ui/button'
 import { useForm } from "react-hook-form"
 
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
 import { SignupValidation } from "@/lib/validation"
 import Loader from "@/components/shared/Loader"
 import { Link, useNavigate } from "react-router-dom"
-import { createUserAccount } from "@/lib/appwrite/api"
 
 import { useToast } from "@/components/ui/use-toast"
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/quriesAndMutation"
@@ -21,12 +20,12 @@ import { useUserContext } from "@/context/AuthContext"
 const SignupForm = () => {
 
   const { toast } = useToast();
-  const {checkAuthUser, isLoading: isUserLoading } = useUserContext()
+  const {checkAuthUser } = useUserContext()
   const navigate = useNavigate();
 
   const {mutateAsync: createUserAccount, isPending: isCreatingUser} = useCreateUserAccount();
 
-  const {mutateAsync: SignInAccount, isPending: isSigningIn} = useSignInAccount();
+  const {mutateAsync: SignInAccount, /*isPending: isSigningIn*/} = useSignInAccount();
 
   // 1 . Defining form 
   const form = useForm<z.infer<typeof SignupValidation>>({

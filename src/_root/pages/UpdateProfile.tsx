@@ -1,9 +1,8 @@
-import React from 'react'
 
-const UpdataProfile = () => {
+const UpdateProfile = () => {
   return (
-    <div>UpdataProfile</div>
+    <div>UpdateProfile</div>
   )
 }
 
-export default UpdataProfile
+export default UpdateProfile
