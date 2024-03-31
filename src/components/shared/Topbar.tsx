@@ -21,9 +21,9 @@ const Topbar = () => {
             <div className="flex-between py-4 px-5">
                 <Link to="/" className="flex gap-3 items-center">
                     <img
-                        src="/assets/images/logo.svg"
+                        src="/assets/images/connect-logo.png"
                         alt="logo"
-                        width={130}
+                        width={230}
                         height={325}
                     />
 
